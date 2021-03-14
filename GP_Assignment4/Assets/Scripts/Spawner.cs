@@ -12,6 +12,8 @@ public class Spawner : MonoBehaviour
         {
             SpawnPin();
         }
+
+        Score.timeRemaining -= Time.deltaTime;
     }
 
     void SpawnPin()

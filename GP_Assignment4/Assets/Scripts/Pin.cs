@@ -9,6 +9,11 @@ public class Pin : MonoBehaviour
     public float speed = 20f;
     public Rigidbody2D rb;
 
+    private void Start()
+    {
+        speed = PlayerPrefs.GetFloat("pinSpeed", 20f);
+    }
+
     private void Update()
     {
         if(!isPinned) rb.MovePosition(rb.position + Vector2.up * speed * Time.deltaTime);
@@ -21,11 +26,16 @@ public class Pin : MonoBehaviour
             transform.SetParent(collision.transform);
             isPinned = true;
             Score.PinCount++;
+
+            if (Score.PinCount % 3f == 0)
+                collision.GetComponent<Rotator>().IncreaseDifficulty();
         }
 
         else if (collision.tag == "Pin")
         {
             FindObjectOfType<GameManager>().EndGame();
+            this.enabled = false;
+            collision.GetComponent<Pin>().enabled = false;
         }
     }
 }

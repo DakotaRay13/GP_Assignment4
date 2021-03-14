@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -11,6 +10,13 @@ public class GameManager : MonoBehaviour
     public Spawner spawner;
 
     public Animator animator;
+
+    public Text uiText;
+
+    private void Start()
+    {
+        uiText.text = PlayerPrefs.GetString("playerName", "Player") + ": " + Score.livesRemaining.ToString();
+    }
 
     public void EndGame()
     {
@@ -27,6 +33,14 @@ public class GameManager : MonoBehaviour
 
     public void RestartLevel()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Score.livesRemaining--;
+        if (Score.livesRemaining <= 0 || Score.timeRemaining <= 0f)
+        {
+            SceneManager.LoadScene("EndScene");
+        }
+        else
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
     }
 }
